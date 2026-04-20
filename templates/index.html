@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Taxi Price Predictor</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #1e293b;
+            padding: 40px;
+            border-radius: 15px;
+            width: 350px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+            font-size: 22px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background: #22c55e;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #16a34a;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #0f172a;
+            border-radius: 10px;
+            font-size: 18px;
+            color: #22c55e;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>🚖 Taxi Price Predictor</h1>
+
+    <form action="/predict_form" method="POST">
+        <input type="number" step="any" name="distance" placeholder="Enter Distance (km)" required>
+        <input type="number" step="any" name="duration" placeholder="Enter Duration (min)" required>
+        <button type="submit">Predict Fare</button>
+    </form>
+
+    <div class="hint">Enter realistic values for better prediction</div>
+
+    {% if prediction %}
+        <div class="result">
+            💰 Estimated Fare: ₹ {{ prediction }}
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>

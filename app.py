@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, render_template
 import pickle
 import pandas as pd
 
@@ -9,28 +9,30 @@ columns = pickle.load(open("columns.pkl", "rb"))
 
 @app.route("/")
 def home():
-    return "Taxi Price Prediction API Running"
+    return render_template("index.html")
 
-@app.route("/predict", methods=["POST"])
-def predict():
-    data = request.json
+@app.route("/predict_form", methods=["POST"])
+def predict_form():
+    distance = float(request.form["distance"])
+    duration = float(request.form["duration"])
 
-    # Convert input to dataframe
+    data = {
+        "distance": distance,
+        "duration": duration
+    }
+
     df = pd.DataFrame([data])
-
-    # Convert to same format as training
     df = pd.get_dummies(df)
 
-    # Add missing columns
     for col in columns:
         if col not in df:
             df[col] = 0
 
     df = df[columns]
 
-    prediction = model.predict(df)
+    prediction = model.predict(df)[0]
 
-    return jsonify({"prediction": float(prediction[0])})
+    return render_template("index.html", prediction=round(prediction, 2))
 
 if __name__ == "__main__":
     app.run(debug=True)
